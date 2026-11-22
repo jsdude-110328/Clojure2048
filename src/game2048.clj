@@ -33,68 +33,72 @@
           (reset! target 2)))))) ; 숫자 뽑아서 추가하는 코드
 
 (defn move-w []
-  (adder)
-  (doseq [i (range 1 5)
-          j (range 1 4)
-          :let [k (inc j)]]
-    (let [foo (resolve (symbol (str "x" i "_y" j)))
-          bar (resolve (symbol (str "x" i "_y" k)))]
-      (cond
-        (and (= @@foo @@bar) (not= @@foo 0)) (do
-                                               (reset! @foo 0)
-                                               (swap! @bar #(* % 2))
-                                               (swap! score #(+ % @@bar)))
-        (and (= @@bar 0) (not= @@foo 0)) (do
-                                           (reset! @bar @@foo)
-                                           (reset! @foo 0)))))) ; 위로 이동
+  (dotimes [_ 3]
+    (doseq [i (range 1 5)
+            j (range 3 0 -1)
+            :let [k (inc j)]]
+      (let [foo (resolve (symbol (str "x" i "_y" j)))
+            bar (resolve (symbol (str "x" i "_y" k)))]
+        (cond
+          (and (= @@foo @@bar) (not= @@foo 0)) (do
+                                                 (reset! @foo 0)
+                                                 (swap! @bar #(* % 2))
+                                                 (swap! score #(+ % @@bar)))
+          (and (= @@bar 0) (not= @@foo 0)) (do
+                                             (reset! @bar @@foo)
+                                             (reset! @foo 0))))))
+  (adder)) ; 위로 이동
 
-(defn move-a []
-  (adder)
-  (doseq [i (range 2 5)
-          j (range 1 5)
-          :let [k (dec i)]]
-    (let [foo (resolve (symbol (str "x" i "_y" j)))
-          bar (resolve (symbol (str "x" k "_y" j)))]
-      (cond
-        (and (= @@foo @@bar) (not= @@foo 0)) (do
-                                               (reset! @foo 0)
-                                               (swap! @bar #(* % 2))
-                                               (swap! score #(+ % @@bar)))
-        (and (= @@bar 0) (not= @@foo 0)) (do
-                                           (reset! @bar @@foo)
-                                           (reset! @foo 0)))))) ; 왼쪽으로 이동
+(defn move-a [] 
+  (dotimes [_ 3]
+    (doseq [i (range 2 5)
+            j (range 1 5)
+            :let [k (dec i)]]
+      (let [foo (resolve (symbol (str "x" i "_y" j)))
+            bar (resolve (symbol (str "x" k "_y" j)))]
+        (cond
+          (and (= @@foo @@bar) (not= @@foo 0)) (do
+                                                 (reset! @foo 0)
+                                                 (swap! @bar #(* % 2))
+                                                 (swap! score #(+ % @@bar)))
+          (and (= @@bar 0) (not= @@foo 0)) (do
+                                             (reset! @bar @@foo)
+                                             (reset! @foo 0))))))
+  (adder)) ; 왼쪽으로 이동
 
-(defn move-s []
-  (adder)
-  (doseq [i (range 1 5)
-          j (range 2 5)
-          :let [k (dec j)]]
-    (let [foo (resolve (symbol (str "x" i "_y" j)))
-          bar (resolve (symbol (str "x" i "_y" k)))]
-      (cond
-        (and (= @@foo @@bar) (not= @@foo 0)) (do
-                                               (reset! @foo 0)
-                                               (swap! @bar #(* % 2))
-                                               (swap! score #(+ % @@bar)))
-        (and (= @@bar 0) (not= @@foo 0)) (do
-                                           (reset! @bar @@foo)
-                                           (reset! @foo 0)))))) ; 아래로 이동
+(defn move-s [] 
+  (dotimes [_ 3]
+    (doseq [i (range 1 5)
+            j (range 2 5)
+            :let [k (dec j)]]
+      (let [foo (resolve (symbol (str "x" i "_y" j)))
+            bar (resolve (symbol (str "x" i "_y" k)))]
+        (cond
+          (and (= @@foo @@bar) (not= @@foo 0)) (do
+                                                 (reset! @foo 0)
+                                                 (swap! @bar #(* % 2))
+                                                 (swap! score #(+ % @@bar)))
+          (and (= @@bar 0) (not= @@foo 0)) (do
+                                             (reset! @bar @@foo)
+                                             (reset! @foo 0))))))
+  (adder)) ; 아래로 이동
 
 (defn move-d []
-  (adder)
-  (doseq [i (range 1 4)
-          j (range 1 5)
-          :let [k (inc i)]]
-    (let [foo (resolve (symbol (str "x" i "_y" j)))
-          bar (resolve (symbol (str "x" k "_y" j)))]
-      (cond
-        (and (= @@foo @@bar) (not= @@foo 0)) (do
-                                               (reset! @foo 0)
-                                               (swap! @bar #(* % 2))
-                                               (swap! score #(+ % @@bar)))
-        (and (= @@bar 0) (not= @@foo 0)) (do
-                                           (reset! @bar @@foo)
-                                           (reset! @foo 0)))))) ; 오른쪽으로 이동
+  (dotimes [_ 3]
+    (doseq [i (range 3 0 -1)
+            j (range 1 5)
+            :let [k (inc i)]]
+      (let [foo (resolve (symbol (str "x" i "_y" j)))
+            bar (resolve (symbol (str "x" k "_y" j)))]
+        (cond
+          (and (= @@foo @@bar) (not= @@foo 0)) (do
+                                                 (reset! @foo 0)
+                                                 (swap! @bar #(* % 2))
+                                                 (swap! score #(+ % @@bar)))
+          (and (= @@bar 0) (not= @@foo 0)) (do
+                                             (reset! @bar @@foo)
+                                             (reset! @foo 0))))))
+  (adder)) ; 오른쪽으로 이동
 
 
 (defn mod-pow [base exp m]
