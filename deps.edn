@@ -1,0 +1,9 @@
+{:paths ["src" "classes"]
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}}
+ :aliases
+ {:uberjar
+  {:extra-deps {com.github.seancorfield/depstar {:mvn/version "2.1.303"}}
+   :exec-fn hf.depstar/uberjar
+   :exec-args {:jar "target/2048.jar"
+               :aot true
+               :main-class "game2048"}}}}
