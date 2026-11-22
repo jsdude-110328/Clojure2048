@@ -10,10 +10,10 @@
          `(def ~(symbol (str "x" m "_y" n)) (atom 0)))))
 (make-grid) ; 좌표 변수 생성
 
-(def num_list '(@x1_y1 @x2_y1 @x3_y1 @x4_y1
-                       @x1_y2 @x2_y2 @x3_y2 @x4_y2
-                       @x1_y3 @x2_y3 @x3_y3 @x4_y3
-                       @x1_y4 @x2_y4 @x3_y4 @x4_y4))
+(def num_list [x1_y1 x2_y1 x3_y1 x4_y1
+               x1_y2 x2_y2 x3_y2 x4_y2
+               x1_y3 x2_y3 x3_y3 x4_y3 
+               x1_y4 x2_y4 x3_y4 x4_y4])
 
 (def score (atom 0))
 
@@ -24,14 +24,13 @@
   (println (str "|" @x1_y1 "|" @x2_y1 "|" @x3_y1 "|" @x4_y1 "|"))) ; 변수들 출력
 
 (defn adder []
-  (let [zeros (filter #(== % 0) num_list)]
-    (if (not= (count zeros) 0)
+  (let [zeros (filter #(zero? @%) num_list)]
+    (when (seq zeros)
       (let [target (rand-nth zeros)
-            random (rand)]
-        (cond
-          (> random 0.9) (reset! target 4)
-          :else (reset! target 2)))
-      ()))) ; 숫자 뽑아서 추가하는 코드
+            rannum (rand)]
+        (if (> rannum 0.9)
+          (reset! target 4)
+          (reset! target 2)))))) ; 숫자 뽑아서 추가하는 코드
 
 (defn move-w []
   (adder)
@@ -115,7 +114,7 @@
 
 (defn -main [& args]
   (let [keeper (atom true)]
-    (while keeper 
+    (while @keeper 
       (println (str "현재 점수: " @score ". 최고 점수: " max-value))
       (printer)
       (println "W로 위로, A로 왼쪽으로, S로 아래로, D로 오른쪽으로 이동하세요. Q로 게임을 종료합니다.")
@@ -128,5 +127,7 @@
           (= ans "S") (move-s)
           (= ans "D") (move-d)
           (= ans "Q") (do
-                        )
+                        (println "게임을 종료합니다.")
+                        (score-add)
+                        (reset! keeper false))
           :else (println "오류입니다."))))))
