@@ -131,7 +131,9 @@
   (let [keeper (atom true)]
     (while @keeper
       (let [samer (boolean (some (fn [[a b]] (= a b)) close-pairs))
-            zeros (count (filter #(= @% 0) num_list))]
+            zeros (->> num_list
+                       (filter #(= @% 0))
+                       (count))]
         (if (or (not= 0 zeros) (= samer true))
           (do
             (println (str "현재 점수: " @score ". 최고 점수: " max-value))
