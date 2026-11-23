@@ -12,8 +12,19 @@
 
 (def num_list [x1_y1 x2_y1 x3_y1 x4_y1
                x1_y2 x2_y2 x3_y2 x4_y2
-               x1_y3 x2_y3 x3_y3 x4_y3 
+               x1_y3 x2_y3 x3_y3 x4_y3
                x1_y4 x2_y4 x3_y4 x4_y4])
+(def close-pairs
+  [[x1_y1, x2_y1], [x2_y1, x3_y1], [x3_y1, x4_y1],
+   [x1_y2, x2_y2], [x2_y2, x3_y2], [x3_y2, x4_y2],
+   [x1_y3, x2_y3], [x2_y3, x3_y3], [x3_y3, x4_y3],
+   [x1_y4, x2_y4], [x2_y4, x3_y4], [x3_y4, x4_y4], ; 상하로 인접
+
+   [x1_y1, x1_y2], [x1_y2, x1_y3], [x1_y3, x1_y4],
+   [x2_y1, x2_y2], [x2_y2, x2_y3], [x2_y3, x2_y4],
+   [x3_y1, x3_y2], [x3_y2, x3_y3], [x3_y3, x3_y4],
+   [x4_y1, x4_y2], [x4_y2, x4_y3], [x4_y3, x4_y4] ; 좌우로 인접
+   ])
 
 (def score (atom 0))
 
@@ -49,7 +60,7 @@
                                              (reset! @foo 0))))))
   (adder)) ; 위로 이동
 
-(defn move-a [] 
+(defn move-a []
   (dotimes [_ 3]
     (doseq [i (range 2 5)
             j (range 1 5)
@@ -66,7 +77,7 @@
                                              (reset! @foo 0))))))
   (adder)) ; 왼쪽으로 이동
 
-(defn move-s [] 
+(defn move-s []
   (dotimes [_ 3]
     (doseq [i (range 1 5)
             j (range 2 5)
@@ -118,20 +129,28 @@
 
 (defn -main [& args]
   (let [keeper (atom true)]
-    (while @keeper 
-      (println (str "현재 점수: " @score ". 최고 점수: " max-value))
-      (printer)
-      (println "W로 위로, A로 왼쪽으로, S로 아래로, D로 오른쪽으로 이동하세요. Q로 게임을 종료합니다.")
-      (flush)
-      (let [raw-ans (read-line)
-            ans (str/upper-case raw-ans)]
-        (cond
-          (= ans "W") (move-w)
-          (= ans "A") (move-a)
-          (= ans "S") (move-s)
-          (= ans "D") (move-d)
-          (= ans "Q") (do
-                        (println "게임을 종료합니다.")
-                        (score-add)
-                        (reset! keeper false))
-          :else (println "오류입니다."))))))
+    (while @keeper
+      (let [samer (boolean (some (fn [[a b]] (= a b)) close-pairs))
+            zeros (count (filter #(= @% 0) num_list))]
+        (if (or (not= 0 zeros) (= samer true))
+          (do
+            (println (str "현재 점수: " @score ". 최고 점수: " max-value))
+            (printer)
+            (println "W로 위로, A로 왼쪽으로, S로 아래로, D로 오른쪽으로 이동하세요. Q로 게임을 종료합니다.")
+            (flush)
+            (let [raw-ans (read-line)
+                  ans (str/upper-case raw-ans)]
+              (cond
+                (= ans "W") (move-w)
+                (= ans "A") (move-a)
+                (= ans "S") (move-s)
+                (= ans "D") (move-d)
+                (= ans "Q") (do
+                              (println "게임을 종료합니다.")
+                              (score-add)
+                              (reset! keeper false))
+                :else (println "오류입니다."))))
+          (do
+            (println "GAME OVER! 더 이상 진행할 수 없습니다.")
+            (score-add)
+            (reset! keeper false)))))))
