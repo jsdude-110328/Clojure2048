@@ -37,8 +37,8 @@
     (doseq [i (range 1 5)
             j (range 3 0 -1)
             :let [k (inc j)]]
-      (let [foo (resolve (symbol (str "x" i "_y" j)))
-            bar (resolve (symbol (str "x" i "_y" k)))]
+      (let [foo (ns-resolve 'game2048 (symbol (str "x" i "_y" j)))
+            bar (ns-resolve 'game2048 (symbol (str "x" i "_y" k)))]
         (cond
           (and (= @@foo @@bar) (not= @@foo 0)) (do
                                                  (reset! @foo 0)
@@ -54,8 +54,8 @@
     (doseq [i (range 2 5)
             j (range 1 5)
             :let [k (dec i)]]
-      (let [foo (resolve (symbol (str "x" i "_y" j)))
-            bar (resolve (symbol (str "x" k "_y" j)))]
+      (let [foo (ns-resolve 'game2048 (symbol (str "x" i "_y" j)))
+            bar (ns-resolve 'game2048 (symbol (str "x" k "_y" j)))]
         (cond
           (and (= @@foo @@bar) (not= @@foo 0)) (do
                                                  (reset! @foo 0)
@@ -71,8 +71,8 @@
     (doseq [i (range 1 5)
             j (range 2 5)
             :let [k (dec j)]]
-      (let [foo (resolve (symbol (str "x" i "_y" j)))
-            bar (resolve (symbol (str "x" i "_y" k)))]
+      (let [foo (ns-resolve 'game2048 (symbol (str "x" i "_y" j)))
+            bar (ns-resolve 'game2048 (symbol (str "x" i "_y" k)))]
         (cond
           (and (= @@foo @@bar) (not= @@foo 0)) (do
                                                  (reset! @foo 0)
@@ -88,8 +88,8 @@
     (doseq [i (range 3 0 -1)
             j (range 1 5)
             :let [k (inc i)]]
-      (let [foo (resolve (symbol (str "x" i "_y" j)))
-            bar (resolve (symbol (str "x" k "_y" j)))]
+      (let [foo (ns-resolve 'game2048 (symbol (str "x" i "_y" j)))
+            bar (ns-resolve 'game2048 (symbol (str "x" k "_y" j)))]
         (cond
           (and (= @@foo @@bar) (not= @@foo 0)) (do
                                                  (reset! @foo 0)

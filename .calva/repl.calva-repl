@@ -17,6 +17,3 @@
 (when-let [requires (resolve 'clojure.main/repl-requires)] (clojure.core/apply clojure.core/require @requires))
 clj꞉user꞉> 
 clj꞉game2048꞉> 
-(when-let [requires (resolve 'clojure.main/repl-requires)] (clojure.core/apply clojure.core/require @requires))
-clj꞉user꞉> 
-clj꞉game2048꞉> 
