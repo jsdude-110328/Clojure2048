@@ -130,7 +130,7 @@
 (defn -main [& args]
   (let [keeper (atom true)]
     (while @keeper
-      (let [samer (boolean (some (fn [[a b]] (= a b)) close-pairs))
+      (let [samer (boolean (some (fn [[a b]] (= @a @b)) close-pairs))
             zeros (->> num_list
                        (filter #(= @% 0))
                        (count))]
